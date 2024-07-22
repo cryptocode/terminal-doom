@@ -1,4 +1,4 @@
-//! SPDX-License-Identifier: GPL-2-0 MIT
+//! SPDX-License-Identifier: GPL-2-0 or MIT
 #include "config.h"
 
 #include <stdio.h>
