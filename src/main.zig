@@ -224,6 +224,12 @@ fn translateDoomBufferToRGBA() void {
 pub fn main() !void {
     // Use the C allocator for speed
     const alloc = std.heap.c_allocator;
+    const envmap = try std.process.getEnvMap(alloc);
+    if (envmap.get("TMUX")) |_| {
+        try std.io.getStdErr().writer().print("Terminal Doom can not run under tmux\n", .{});
+        std.process.exit(1);
+    }
+
     var tty = try vaxis.Tty.init();
     defer tty.deinit();
 
