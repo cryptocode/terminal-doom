@@ -976,11 +976,7 @@ void M_Episode(int choice)
     M_SetupNextMenu(&NewDef);
 }
 
-
-
-//
 // M_Options
-//
 static char *detailNames[2] = {"M_GDHIGH","M_GDLOW"};
 static char *msgNames[2] = {"M_MSGOFF","M_MSGON"};
 
@@ -1009,11 +1005,7 @@ void M_Options(int choice)
     M_SetupNextMenu(&OptionsDef);
 }
 
-
-
-//
-//      Toggle messages on/off
-//
+// Toggle messages on/off
 void M_ChangeMessages(int choice)
 {
     // warning: unused parameter `int choice'
@@ -1029,17 +1021,10 @@ void M_ChangeMessages(int choice)
 }
 
 
-//
 // M_EndGame
-//
 void M_EndGameResponse(int key)
 {
-    if (key != key_menu_confirm)
-	return;
-		
-    currentMenu->lastOn = itemOn;
-    M_ClearMenus ();
-    D_StartTitle ();
+    // We require ctrl+c to exit in order to cleanly exit to terminal
 }
 
 void M_EndGame(int choice)
@@ -1060,12 +1045,7 @@ void M_EndGame(int choice)
     M_StartMessage(DEH_String(ENDGAME),M_EndGameResponse,true);
 }
 
-
-
-
-//
 // M_ReadThis
-//
 void M_ReadThis(int choice)
 {
     choice = 0;
