@@ -21,10 +21,10 @@ Terminal Doom uses the [libvaxis Zig library](https://github.com/rockorager/libv
 If you ever want to make a TUI app, I highly recommend this library. 
 
 ### Sound support
-Add the `-Dsound=true` flag if you want compile with sound support, `false` to turn it off (like when running on a remote server)
+Add the `-Dsound=true` flag if you want compile with sound support, `false` to turn it off (like when running on a remote server via ssh)
 
-All sound effects are included, and a few music tracks. You can download
-and add additional music tracks (mp3) yourself. Terminal Doom will automatically pick them up from the `sound` directory. See the sound section for naming.
+All sound effects are included, and a few music tracks. You can download and add additional music tracks (mp3) yourself.
+Terminal Doom will automatically pick them up from the `sound` directory. See the sound section for naming.
 
 ### Where does it run?
 Tested on macOS and Linux. Compiles on Windows as well, but no terminal there seems to run it (WezTerm gets close in ssh local mode)
@@ -33,18 +33,18 @@ Currently works best in Ghostty and Kitty as these have solid implementations of
 work if you use 'f' instead of ctrl keys for firing the gun.
 
 ## Playing
-You can play keyboard-only or in combination with a mouse. You can disable/enable mouse at any time by pressing `m` (useful if playing with keyboard on a laptop to avoid spurious input from the trackpad)
+You can play keyboard-only (recommended) or in combination with a mouse. You can disable/enable mouse at any time by pressing `m`. This is useful when playing with keyboard on a laptop to avoid spurious input from the trackpad.
 
 When using a mouse, make sure you adjust sensitivity in the Options menu if it's too fast or slow. Also try adjusting sensitivity on your mouse if it has buttons for this. Once sensitivity is right, playing with a mouse/keyboard combo is pretty efficient.
-That said, mouse reporting in terminals do have limitations.
+Keep in mind that mouse support in terminals comes with limitations.
 
 | Action                    | Keys/Mouse Actions                  |
 |---------------------------|-------------------------------------|
 | Walk / rotate             | Arrow keys or mouse. `j`, `l` also rotates.|
-| Walk / stride             | `wasd`                              | 
+| Walk / strafe             | `wasd`                              | 
 | Fire                      | `f`, `i`, control keys, mouse click |
 | Use/open                  | Spacebar, right mouse click         |
-| Stride left/right         | Alt+arrow keys, `a`, `d`            |
+| Strafe left/right         | Alt+arrow keys, `a`, `d`            |
 | Quit                      | `Ctrl+c`                            |
 | Disable/enable mouse      | `m`                                 |
 | Disable/enable scaling    | `u`                                 |
@@ -80,16 +80,16 @@ This sequence repeats for every frame. While this is enough to run Doom smoothly
 ## Sound
 The history of Doom has many interesting facets, and its sound library is no different. You can read about it [here](https://doomwiki.org/wiki/Origins_of_Doom_sounds)
 
-Terminal Doom's sound support originally worked by calling out SDL2, but that had a couple of problems. First of all, the implementation
-from doomgeneric was complicated and large. Second, depending on SDL2 makes building harder.
+Terminal Doom's sound support originally worked by calling out to SDL2, but that had a couple of problems. First of all, the implementation
+from doomgeneric was complicated and large. Second, depending on SDL2 made building harder on some systems.
 
-The solution I can up was this:
+This is the solution I came up with:
 
 1. Ditch all the complex midi sequencing and mixing logic.
-2. Make the wav files part of the project
-3. Call out to miniaudio to play the wav file whose name matches the sfx name.
+2. Make the wav and mp3 files part of the project
+3. Outsource playback to *miniaudio*
 
-While large, miniaudio is a single header file, it's portable, and has a very easy to use API.
+While large, miniaudio is a single header file, it's portable, and has a straightforward API.
 
 ### Adding additional music tracks
 Terminal Doom ships with a few tracks, such as for the intro and the first level.
@@ -132,11 +132,11 @@ freedoom1.wad
 ## Credits
 * The engine is based on the amazing [doomgeneric](https://github.com/ozkl/doomgeneric) project
 * Rendering and input is handled by [libvaxis](https://github.com/rockorager/libvaxis), a TUI library written in Zig
-* Sound is handled by [miniaudio](https://miniaud.io/), a single-file sound playback libary
+* Sound is handled by [miniaudio](https://miniaud.io/), a single-file sound playback library
 * Build system (and the main input/rendering loop) is all [Zig](https://ziglang.org/)
-* Testing and debugging in Ghostty's terminal inspector (closed beta), [Kitty](https://sw.kovidgoyal.net/kitty/graphics-protocol/), and [WezTerm](https://wezfurlong.org/wezterm/index.html)
+* Testing and debugging in Ghostty's terminal inspector (currently closed beta), [Kitty](https://sw.kovidgoyal.net/kitty/graphics-protocol/), and [WezTerm](https://wezfurlong.org/wezterm/index.html)
 
 ## LICENSE
 As Terminal Doom is based on the doomgeneric project, the project as a whole is licensed under GPL2.
 
-The Zig-based renderer/handler, build file, and MiniAudio sound integration is licensed under MIT.
+The Zig-based renderer/handler, build file, and miniaudio bridge are licensed under MIT.
