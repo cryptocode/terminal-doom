@@ -14,7 +14,7 @@ Build with Zig v.0.13 (which includes a C compiler for the doomgeneric parts).
 
 There are no system dependencies, just clone and build:
 
-`zig build -Doptimize=ReleaseFast`
+`zig build -Dsound=true -Doptimize=ReleaseFast`
 
 Run with `zig-out/bin/terminal-doom`
 
@@ -22,7 +22,7 @@ Terminal Doom uses the [libvaxis Zig library](https://github.com/rockorager/libv
 If you ever want to make a TUI app, I highly recommend this library. 
 
 ### Sound support
-Add the `-Dsound=true` flag if you want compile with sound support.
+Add the `-Dsound=true` flag if you want compile with sound support, `false` to turn it off (like when running on a remote server)
 
 All sound effects are included, and a few music tracks. You can download
 and add additional music tracks (mp3) yourself. Terminal Doom will automatically pick them up from the `sound` directory. See the sound section for naming.
