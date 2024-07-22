@@ -1,7 +1,6 @@
 # Terminal Doom
 Terminal Doom enables Doom-based games to play smoothly in modern terminals using the Kitty graphics protocol. Also works
-over ssh on fast connections. The engine is based on the amazing [doomgeneric project](https://github.com/ozkl/doomgeneric), while
-sound is handled by miniaudio.
+over ssh on fast connections.
 
 `doom1.wad` is included in the repository; other wad files are available on various online sites.
 
@@ -92,7 +91,7 @@ The solution I can up was this:
 
 While large, miniaudio is a single header file, it's portable, and has a very easy to use API.
 
-### Adding addition music tracks
+### Adding additional music tracks
 Terminal Doom ships with a few tracks, such as for the intro and the first level.
 You can add additional mp3's to the `sound` directory. For Terminal Doom to pick these up, they must be named
 according to the Doom convention:
@@ -112,6 +111,8 @@ d_intro.mp3
 d_victor.mp3
 ```
 
+The actual content of these can obviously be anything you want, not just the orginal music.
+
 ## Supported games
 These should all work:
 
@@ -127,6 +128,14 @@ freedm.wad
 freedoom2.wad
 freedoom1.wad
 ```
+
+## Credits
+* The engine is based on the amazing [doomgeneric](https://github.com/ozkl/doomgeneric) project
+* Rendering and input is handled by [libvaxis](https://github.com/rockorager/libvaxis), a TUI library written in Zig
+* Sound is handled by [miniaudio](https://miniaud.io/), a single-file sound playback libary
+* Build system (and the main input/rendering loop) is all [Zig](https://ziglang.org/)
+* Testing and debugging in Ghostty's terminal inspector (closed beta), [Kitty](https://sw.kovidgoyal.net/kitty/graphics-protocol/), and [WezTerm](https://wezfurlong.org/wezterm/index.html)
+
 ## LICENSE
 As Terminal Doom is based on the doomgeneric project, the project as a whole is licensed under GPL2.
 
