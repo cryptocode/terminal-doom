@@ -1062,6 +1062,8 @@ void PrintGameVersion(void)
     }
 }
 
+void D_Exit();
+
 // Function called at exit to display the ENDOOM screen
 
 static void D_Endoom(void)
@@ -1079,10 +1081,7 @@ static void D_Endoom(void)
     }
 
     endoom = W_CacheLumpName(DEH_String("ENDOOM"), PU_STATIC);
-
-    I_Endoom(endoom);
-
-	exit(0);
+    D_Exit();
 }
 
 #if ORIGCODE
