@@ -163,10 +163,11 @@ pub export fn DG_DrawFrame() callconv(.C) void {
                     var doom_event: event_t = .{
                         .t = .ev_mouse,
                         .data1 = button_state,
-                        .data2 = rel_x * 25,
-                        .data3 = -rel_y * 25,
+                        .data2 = accelerateMouse(rel_x, 25),
+                        .data3 = -rel_y * 4,
                         .data4 = 0,
                     };
+
                     D_PostEvent(&doom_event);
                 }
             },
@@ -175,6 +176,17 @@ pub export fn DG_DrawFrame() callconv(.C) void {
     }
 
     state.loop.vaxis.render(state.loop.tty.anyWriter()) catch unreachable;
+}
+
+fn accelerateMouse(delta: c_int, clamp: f32) c_int {
+    const dx: f32 = @floatFromInt(delta);
+    const multiplier: f32 = if (@abs(dx) < 4)
+        3 * @exp(@abs(dx))
+    else if (@abs(dx) < 8)
+        6 * @exp(@abs(dx))
+    else
+        12 * @exp(@abs(dx));
+    return @intFromFloat(dx * @min(clamp, multiplier));
 }
 
 /// Called by Doom when it needs to sleep

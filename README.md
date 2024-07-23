@@ -40,6 +40,7 @@ Keep in mind that mouse support in terminals comes with limitations.
 
 | Action                    | Keys/Mouse Actions                  |
 |---------------------------|-------------------------------------|
+| Menu                      | ESC to open/close, Enter to select  |
 | Walk / rotate             | Arrow keys or mouse. `j`, `l` also rotates.|
 | Walk / strafe             | `wasd`                              | 
 | Fire                      | `f`, `i`, control keys, mouse click |
