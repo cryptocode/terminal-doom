@@ -280,7 +280,6 @@ pub fn main() !void {
 // Doomgeneric provides the screen buffer which we render when `DG_DrawFrame` is called.
 pub extern var DG_ScreenBuffer: [*c]u32;
 var DG_ScreenBuffer_Converted: [doom_frame_buffer_size]u8 = undefined;
-var base64_screenbuffer: [doom_base64_buffer_size * 2]u8 = undefined;
 pub extern fn doomgeneric_Create(argc: c_int, argv: [*c][*c]u8) void;
 pub extern fn doomgeneric_Tick() void;
 pub extern fn D_PostEvent(ev: *event_t) void;
@@ -288,7 +287,6 @@ pub extern fn D_PostEvent(ev: *event_t) void;
 const doom_width: usize = 640;
 const doom_height: usize = 400;
 const doom_frame_buffer_size: usize = doom_width * doom_height * 4;
-const doom_base64_buffer_size = std.base64.standard.Encoder.calcSize(doom_frame_buffer_size);
 
 /// Map from codepoints to Doom keys
 fn enqueueKey(pressed: bool, key: vaxis.Key) void {
