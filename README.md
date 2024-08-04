@@ -1,19 +1,15 @@
 # Terminal Doom
-Terminal Doom enables Doom-based games to play smoothly in modern terminals using the Kitty graphics protocol. Also works
-over ssh on fast connections.
+Terminal Doom enables Doom-based games to play smoothly in modern terminals with original graphics and sound. It also works
+over fast ssh connections.
 
-`doom1.wad` is included in the repository; other wad files are available on various online sites.
-
-Check it out (feel free to crank up sound):
+Demo with sound:
 
 [![Demo]](https://github.com/user-attachments/assets/8ca127d7-23f6-45cd-82e9-49c51c4cdc42)
 
 ## Building
-Build with Zig v.0.13 (which includes a C compiler for the doomgeneric parts).
+There are no system dependencies, so just clone and build with Zig v0.13:
 
-There are no system dependencies, just clone and build:
-
-`zig build -Dsound=true -Doptimize=ReleaseFast`
+`zig build -Doptimize=ReleaseFast`
 
 Run with `zig-out/bin/terminal-doom`
 
@@ -21,13 +17,13 @@ Terminal Doom uses the [libvaxis Zig library](https://github.com/rockorager/libv
 If you ever want to make a TUI app, I highly recommend this library. 
 
 ### Sound support
-Add the `-Dsound=true` flag if you want compile with sound support, `false` to turn it off (like when running on a remote server via ssh)
+Sound is enabled by default. Add the `-Dsound=false` if you want to compile without sound support (like when running on a remote server via ssh)
 
 All sound effects are included, and a few music tracks. You can download and add additional music tracks (mp3) yourself.
 Terminal Doom will automatically pick them up from the `sound` directory. See the sound section for naming.
 
 ### Where does it run?
-Tested on macOS and Linux. Compiles on Windows as well, but no terminal there seems to run it (WezTerm gets close in ssh local mode)
+Tested on macOS and Linux. Compiles on Windows as well, but no terminal there seems to run it (WezTerm likely gets closest in ssh local mode)
 
 Currently works best in Ghostty and Kitty as these have solid implementations of the required specs. WezTerm should
 work if you use 'f' instead of ctrl keys for firing the gun.
@@ -36,7 +32,8 @@ work if you use 'f' instead of ctrl keys for firing the gun.
 You can play keyboard-only (recommended) or in combination with a mouse. You can disable/enable mouse at any time by pressing `m`. This is useful when playing with keyboard on a laptop to avoid spurious input from the trackpad.
 
 When using a mouse, make sure you adjust sensitivity in the Options menu if it's too fast or slow. Also try adjusting sensitivity on your mouse if it has buttons for this. Once sensitivity is right, playing with a mouse/keyboard combo is pretty efficient.
-Keep in mind that mouse support in terminals comes with limitations.
+
+Keep in mind that mouse support in terminals comes with limitations, as apps are not able to capture the mouse.
 
 | Action                    | Keys/Mouse Actions                  |
 |---------------------------|-------------------------------------|
@@ -49,7 +46,6 @@ Keep in mind that mouse support in terminals comes with limitations.
 | Quit                      | `Ctrl+c`                            |
 | Disable/enable mouse      | `m`                                 |
 | Disable/enable scaling    | `u`                                 |
-
 
 Most other Doom keys should work as well, such as Tab for map and F5 for adjusting detail level.
 
@@ -115,6 +111,8 @@ d_victor.mp3
 The actual content of these can obviously be anything you want, not just the orginal music.
 
 ## Supported games
+`doom1.wad` is included in the repository and other wad files are available on various online sites.
+
 These should all work:
 
 ```

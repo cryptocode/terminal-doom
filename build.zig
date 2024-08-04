@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
     });
     doom.root_module.addImport("vaxis", vaxis.module("vaxis"));
 
-    const sound = b.option(bool, "sound", "If set to true, compile sound support using miniaudio. Default is false.") orelse false;
+    const sound = b.option(bool, "sound", "If set to true, compile sound support using miniaudio. Default is true.") orelse true;
 
     const cflags_sound = if (sound) [_][]const u8{ "-DFEATURE_SOUND", "-Isrc/doomgeneric" } else [_][]const u8{ "", "" };
     const cflags = [_][]const u8{ "-D_THREADSAFE", "-fno-sanitize=undefined" } ++ cflags_sound;

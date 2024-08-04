@@ -16,15 +16,15 @@ const Event = union(enum) {
 const State = struct {
     // For each key in the queue, Doom expects a word. The upper byte
     // contains the pressed-flag, the lower byte the Doom-specific keycode.
-    key_queue: [16]u16,
-    key_queue_write_idx: u4,
-    key_queue_read_idx: u4,
+    key_queue: [32]u16,
+    key_queue_write_idx: u5,
+    key_queue_read_idx: u5,
     startup: i64,
     loop: vaxis.Loop(Event),
     exit_flag: std.atomic.Value(bool),
     mouse_enabled: bool = true,
-    last_mouse_x: usize = std.math.maxInt(usize),
-    last_mouse_y: usize = std.math.maxInt(usize),
+    last_mouse_x: f32 = std.math.floatMax(f32),
+    last_mouse_y: f32 = std.math.floatMax(f32),
     mouse_dir: u21 = 0,
     scale: bool = true,
 };
@@ -135,25 +135,28 @@ pub export fn DG_DrawFrame() callconv(.C) void {
             },
             .mouse => |mouse| {
                 if (state.mouse_enabled) {
-                    const abs_x = mouse.col * @as(usize, @intFromFloat(pix_per_col)) + mouse.xoffset;
-                    const abs_y = mouse.row * @as(usize, @intFromFloat(pix_per_row)) + mouse.yoffset;
+                    // Unscaled screen coordinates
+                    var abs_x: f32 = @as(f32, @floatFromInt(mouse.col)) * pix_per_col + @as(f32, @floatFromInt(mouse.xoffset));
+                    var abs_y: f32 = @as(f32, @floatFromInt(mouse.row)) * pix_per_row + @as(f32, @floatFromInt(mouse.yoffset));
+
+                    // Scaled coordinates
+                    const scalex = doom_width / final_width_pix;
+                    const scaley = doom_height / final_height_pix;
+                    abs_x *= scalex;
+                    abs_y *= scaley;
 
                     var rel_x: c_int = 0;
                     var rel_y: c_int = 0;
 
-                    if (state.last_mouse_x == std.math.maxInt(usize)) {
-                        state.last_mouse_x = abs_x;
-                    } else {
-                        rel_x = @as(c_int, @intCast(abs_x)) - @as(c_int, @intCast(state.last_mouse_x));
-                        state.last_mouse_x = abs_x;
+                    if (state.last_mouse_x != std.math.floatMax(f32)) {
+                        rel_x = @intFromFloat((abs_x - state.last_mouse_x) / scalex);
                     }
+                    state.last_mouse_x = abs_x;
 
-                    if (state.last_mouse_y == std.math.maxInt(usize)) {
-                        state.last_mouse_y = abs_y;
-                    } else {
-                        rel_y = @as(c_int, @intCast(abs_y)) - @as(c_int, @intCast(state.last_mouse_y));
-                        state.last_mouse_y = abs_y;
+                    if (state.last_mouse_y != std.math.floatMax(f32)) {
+                        rel_y = @intFromFloat((abs_y - state.last_mouse_y) / scaley);
                     }
+                    state.last_mouse_y = abs_y;
 
                     var button_state: c_int = 0;
                     if (mouse.button == .left) button_state |= 1;
@@ -163,8 +166,8 @@ pub export fn DG_DrawFrame() callconv(.C) void {
                     var doom_event: event_t = .{
                         .t = .ev_mouse,
                         .data1 = button_state,
-                        .data2 = accelerateMouse(rel_x, 25),
-                        .data3 = -rel_y * 4,
+                        .data2 = accelerateMouse(rel_x, 16),
+                        .data3 = -accelerateMouse(rel_y, 4),
                         .data4 = 0,
                     };
 
@@ -180,13 +183,7 @@ pub export fn DG_DrawFrame() callconv(.C) void {
 
 fn accelerateMouse(delta: c_int, clamp: f32) c_int {
     const dx: f32 = @floatFromInt(delta);
-    const multiplier: f32 = if (@abs(dx) < 4)
-        3 * @exp(@abs(dx))
-    else if (@abs(dx) < 8)
-        6 * @exp(@abs(dx))
-    else
-        12 * @exp(@abs(dx));
-    return @intFromFloat(dx * @min(clamp, multiplier));
+    return @intFromFloat(dx * @min(clamp, 8 * @exp(@abs(dx))));
 }
 
 /// Called by Doom when it needs to sleep
@@ -249,7 +246,7 @@ pub fn main() !void {
     defer vx.deinit(alloc, tty.anyWriter());
 
     state = .{
-        .key_queue = [_]u16{0} ** 16,
+        .key_queue = [_]u16{0} ** 32,
         .key_queue_write_idx = 0,
         .key_queue_read_idx = 0,
         .startup = std.time.milliTimestamp(),
