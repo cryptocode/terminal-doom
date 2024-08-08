@@ -64,16 +64,16 @@ pub export fn DG_DrawFrame() callconv(.C) void {
         }
         return;
     }
-    translateDoomBufferToRGBA();
+    translateDoomBufferToRGB();
 
     var pixels = zigimg.Image{
         .width = 640,
         .height = 400,
-        .pixels = zigimg.color.PixelStorage.initRawPixels(&DG_ScreenBuffer_Converted, .rgba32) catch unreachable,
+        .pixels = zigimg.color.PixelStorage.initRawPixels(&DG_ScreenBuffer_Converted, .rgb24) catch unreachable,
     };
 
     // Write the image pixels using the Kitty image protocol
-    const img = state.loop.vaxis.transmitImage(std.heap.c_allocator, state.loop.tty.anyWriter(), &pixels, .rgba) catch unreachable;
+    const img = state.loop.vaxis.transmitImage(std.heap.c_allocator, state.loop.tty.anyWriter(), &pixels, .rgb) catch unreachable;
 
     // Image size measured in cells
     const cell_size = img.cellSize(win) catch unreachable;
@@ -213,17 +213,15 @@ pub export fn DG_SetWindowTitle(title: [*c]const u8) callconv(.C) void {
     _ = title;
 }
 
-fn translateDoomBufferToRGBA() void {
+fn translateDoomBufferToRGB() void {
     var rgb_index: usize = 0;
-    for (0..doom_frame_buffer_size / 4) |i| {
+    for (0..doom_frame_buffer_size / 3) |i| {
         const pixel: u32 = DG_ScreenBuffer[i];
         DG_ScreenBuffer_Converted[rgb_index] = @intCast((pixel >> 16) & @as(u32, 0xFF));
         rgb_index += 1;
         DG_ScreenBuffer_Converted[rgb_index] = @intCast((pixel >> 8) & @as(u32, 0xFF));
         rgb_index += 1;
         DG_ScreenBuffer_Converted[rgb_index] = @intCast((pixel >> 0) & @as(u32, 0xFF));
-        rgb_index += 1;
-        DG_ScreenBuffer_Converted[rgb_index] = 255;
         rgb_index += 1;
     }
 }
@@ -283,7 +281,7 @@ pub extern fn D_PostEvent(ev: *event_t) void;
 
 const doom_width: usize = 640;
 const doom_height: usize = 400;
-const doom_frame_buffer_size: usize = doom_width * doom_height * 4;
+const doom_frame_buffer_size: usize = doom_width * doom_height * 3;
 
 /// Map from codepoints to Doom keys
 fn enqueueKey(pressed: bool, key: vaxis.Key) void {
