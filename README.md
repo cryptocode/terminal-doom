@@ -1,4 +1,5 @@
-# Terminal Doom
+![terminaldoom](https://github.com/user-attachments/assets/c39a2764-4147-464e-9517-64f352cebbc0)
+
 Terminal Doom enables Doom-based games to play smoothly in modern terminals with original graphics and sound. It also works
 over fast ssh connections.
 
