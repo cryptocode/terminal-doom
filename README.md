@@ -26,8 +26,7 @@ Terminal Doom will automatically pick them up from the `sound` directory. See th
 ### Where does it run?
 Tested on macOS and Linux. Compiles on Windows as well, but no terminal there seems to run it (WezTerm likely gets closest in ssh local mode)
 
-Currently works best in Ghostty and Kitty as these have solid implementations of the required specs. WezTerm should
-work if you use 'f' instead of ctrl keys for firing the gun.
+Currently works best in [Ghostty](https://ghostty.org/) and [Kitty](https://sw.kovidgoyal.net/kitty/) as these have solid implementations of the required specs. [WezTerm](https://wezfurlong.org/wezterm/index.html) works if you use 'f' instead of ctrl keys for firing the gun.
 
 ## Playing
 You can play keyboard-only (recommended) or in combination with a mouse. You can disable/enable mouse at any time by pressing `m`. This is useful when playing with keyboard on a laptop to avoid spurious input from the trackpad.
@@ -134,7 +133,7 @@ freedoom1.wad
 * Rendering and input is handled by [libvaxis](https://github.com/rockorager/libvaxis), a TUI library written in Zig
 * Sound is handled by [miniaudio](https://miniaud.io/), a single-file sound playback library
 * Build system (and the main input/rendering loop) is all [Zig](https://ziglang.org/)
-* Testing and debugging in Ghostty's terminal inspector (currently closed beta), [Kitty](https://sw.kovidgoyal.net/kitty/graphics-protocol/), and [WezTerm](https://wezfurlong.org/wezterm/index.html)
+* Testing and debugging in Ghostty's terminal inspector, Kitty, and WezTerm
 
 ## LICENSE
 As Terminal Doom is based on the doomgeneric project, the project as a whole is licensed under GPL2.
