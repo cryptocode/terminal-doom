@@ -8,11 +8,13 @@ Demo with sound:
 [![Demo]](https://github.com/user-attachments/assets/8ca127d7-23f6-45cd-82e9-49c51c4cdc42)
 
 ## Building
-There are no system dependencies, so just clone and build with Zig v0.13:
+There are no system dependencies, so just clone and build with Zig v0.14:
 
 `zig build -Doptimize=ReleaseFast`
 
 Run with `zig-out/bin/terminal-doom`
+
+To build with older versions of Zig, please use the corresponding git tag.
 
 Terminal Doom uses the [libvaxis Zig library](https://github.com/rockorager/libvaxis) to render and handle keyboard and mouse events.
 If you ever want to make a TUI app, I highly recommend this library. 

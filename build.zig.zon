@@ -1,10 +1,10 @@
 .{
-    .name = "terminal-doom",
+    .name = .terminaldoom,
     .version = "0.1.0",
     .dependencies = .{
         .vaxis = .{
-            .url = "git+https://github.com/rockorager/libvaxis#22dcdb6bf37e44393359737b8ef1d229a6dc9363",
-            .hash = "1220c53b75e66a6558c900c36349d835429345999428291a244862c9ac54763f695f",
+            .url = "git+https://github.com/rockorager/libvaxis?ref=main#c49abb48241e11682b7b8b05c79d20773f1ded98",
+            .hash = "vaxis-0.1.0-BWNV_JEMCQBskZQsnlzh6GoyHSDgOi41bCoZIB2pW-E7",
         },
     },
     .paths = .{
@@ -13,4 +13,5 @@
         "README.md",
         "src",
     },
+    .fingerprint = 0x8f643997c0e9f162,
 }
